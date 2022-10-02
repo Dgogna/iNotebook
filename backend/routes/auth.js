@@ -1,12 +1,14 @@
 const express=require("express");
+const User=require("../models/User");
 const router=express.Router();
 
-router.get("/",(req,res)=>{
-    let obj={
-        name:"Dhruv",
-        email:"dhruvgogna01@gmail.com"
-    }
-    res.send(obj);
+router.post("/",(req,res)=>{
+    console.log(req.body);
+
+    const user=new User(req.body);
+    user.save();
+
+    res.send(req.body);
 })
 
 

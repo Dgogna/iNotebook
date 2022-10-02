@@ -5,6 +5,7 @@ const port=3000;
 const connectToMongo=require("./db");
 connectToMongo();
 
+app.use(express.json());
 
 app.get("/",(req,res)=>{
     res.send("Server is live ");
