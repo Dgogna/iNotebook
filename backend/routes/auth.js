@@ -5,10 +5,11 @@ const { body, validationResult } = require('express-validator');
 const router=express.Router();
 
 var jwt = require('jsonwebtoken');
+const fetchuser=require("../middleware/fetchuser");
 
 const JWT_SECRET="Dhruvgogna@#hello";
 
-// create a user using the post method , endpoint :: "/createuser"
+// ROUTE:1  create a user using the post method , endpoint :: "/createuser"
 // here we dont need to authorize. only aythorized users will come here
 
 router.post("/createuser"
@@ -53,11 +54,51 @@ router.post("/createuser"
         } catch (error) {
             return res.status(500).send("Some error occured");
         }
-
-        
-
 })
 
 
+//ROUTE:2   authenticate an user using port "/login"
+router.post("/login",async(req,res) =>{
+    const {email,password}=req.body;
+
+    try {
+
+        let user=await User.findOne({email});
+        if(!user){
+            return res.status(400).send("Plaease try to login with correct credentials");
+        }
+        const passwordCompare=await bcrypt.compare(password,user.password);
+        if(!passwordCompare){
+            return res.status(400).send("Plaease try to login with correct credentials");
+        }
+
+        const data={
+            user:{
+                id:user.id
+            }
+        }
+        const authToken=jwt.sign(data,JWT_SECRET);
+        return res.json({authToken});
+
+        
+    } catch (error) {
+        return res.status(500).send("Some error occured");
+    }
+})
+
+
+// ROUTE:3 getting logged in user details "/api/auth/getuser"  Login required
+
+router.post("/getuser",fetchuser,async(req,res)=>{
+
+    try {
+        const userId=req.user.id;
+        const user=await User.findById(userId).select("-password");
+        res.send(user);
+    } catch (error) {
+        return res.status(500).send("Internal Server Error");
+    }
+
+});
 
 module.exports=router;
