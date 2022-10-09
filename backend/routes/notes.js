@@ -26,7 +26,7 @@ router.post("/addnote",fetchuser,async(req,res)=>{
         });
         return res.json(note);
     } catch (error) {
-        return res.status(500).send("Internal Server Error");
+        return res.status(500).json("Internal Server Error");
     }
 });
 
@@ -72,7 +72,7 @@ router.delete("/deletenote/:id",fetchuser,async(req,res)=>{
     }
     note=await Notes.findByIdAndDelete(req.params.id);
 
-    return res.send("Succesfully deleted the note" );
+    return res.json("Succesfully deleted the note" );
 })
 
 
