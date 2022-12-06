@@ -7,14 +7,14 @@ const Login = () => {
 
     const context=useContext(noteContext);
     const {getUser}=context;
-
+    const host="http://localhost:5000";
 
     const [credentials,setCredentials]=useState({email:"",password:""});
 
     const handleSubmit=async (e)=>{
         e.preventDefault();
         // console.log(credentials);
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST', 
             mode: 'cors', 
             cache: 'no-cache', 

@@ -4,6 +4,7 @@ import NoteContext from "./noteContext";
 
 const NoteState = (props)=>{
 
+    // const host="https://agile-fortress-39061.herokuapp.com"
     const host="http://localhost:5000";
 
     const notesInitial=[];
@@ -108,7 +109,7 @@ const NoteState = (props)=>{
     // fetch the current user
     const getUser= async ()=>{
         // if(localStorage.getItem("token")){
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        const response = await fetch(`${host}/api/auth/getuser`, {
             method: 'POST', 
             mode: 'cors', 
             cache: 'no-cache', 
